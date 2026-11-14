@@ -1,0 +1,39 @@
+name: Nieuwsoverzicht
+
+on:
+  schedule:
+    # Elke dag om 05:17 UTC (06:17 of 07:17 Nederlandse tijd).
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nieuwsoverzicht
+  cancel-in-progress: false
+
+jobs:
+  bijwerken:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Feeds ophalen en overzicht schrijven
+        run: python nieuwsoverzicht.py
+
+      - name: Wijzigingen vastleggen
+        run: |
+          git add data overzichten
+          if git diff --cached --quiet -- data; then
+            echo "Geen nieuwe berichten."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Nieuwsoverzicht bijgewerkt ($(date -u +%F))"
+          git push

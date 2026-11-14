@@ -1,0 +1,29 @@
+# Bronnen voor het nieuwsoverzicht.
+#
+# Per bron:
+#   naam     - kopje in het overzicht
+#   url      - adres van de feed (RSS 2.0, Atom of een Google News-sitemap)
+#   bevat    - (optioneel) alleen items waarvan titel of samenvatting een van
+#              deze woorden bevat; hoofdletters maken niet uit
+#   zonder   - (optioneel) items met een van deze woorden in de titel overslaan
+#   maximum  - (optioneel) hooguit zoveel items per keer ophalen
+
+[[bron]]
+naam = "Rijksoverheid"
+url = "https://feeds.rijksoverheid.nl/nieuws.rss"
+
+# Rechtspraak.nl heeft geen RSS-feed meer voor nieuws; de nieuws-sitemap bevat
+# dezelfde berichten, maar alleen van de laatste twee dagen. Daarom draait het
+# script dagelijks en bewaart het wat het al gezien heeft.
+[[bron]]
+naam = "Rechtspraak"
+url = "https://www.rechtspraak.nl/sitemap-news.xml"
+zonder = ["zittingslijst", "agenda ondernemingskamer"]
+
+# Voorbeeld: gepubliceerde uitspraken belastingrecht (open data, Atom).
+# Dit zijn er honderden per week; gebruik 'bevat' om te filteren.
+#
+# [[bron]]
+# naam = "Uitspraken belastingrecht"
+# url = "https://data.rechtspraak.nl/uitspraken/zoeken?subject=http://psi.rechtspraak.nl/rechtsgebied%23bestuursrecht_belastingrecht&sort=DESC&return=DOC&max=200"
+# bevat = ["box 3", "bedrijfsopvolging"]
